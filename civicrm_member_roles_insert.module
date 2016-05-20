@@ -1,0 +1,24 @@
+<?php
+/**
+ * @file Main file for CiviCRM Member Roles Insert module.
+ */
+
+
+function civicrm_member_roles_insert_user($op, &$edit, &$account) {
+  if ($op == 'insert') {
+    if (variable_get('civicrm_member_roles_sync_method', 0) == 3) {
+      // By this time, civicrm_member_roles will have applied the appropriate roles,
+      // by calling user_save() from hook_user under the 'insert' op. However,
+      // since we're inserting a new user, Drupal itself will call user_save
+      // one more time, to apply whatever is in the $edit array. Problem is,
+      // civicrm_member_roles doesn't take steps to add the roles to the $edit
+      // array, so when Drupal finally calls user_save(), it once again wipes out
+      // those roles.
+      // To fix this, we load the user now (while it still has those roles), and
+      // then add those roles to the $edit array.
+      $user_loaded = user_load($account->uid);
+      $edit['roles'] = $user_loaded->roles;
+    }
+  }
+}
+

@@ -1,0 +1,6 @@
+name = CiviMember Roles Insert
+description = "Fixes behavior of 'CiviMember Roles Sync' module so that it properly syncs roles even at the moment of user self-registration"
+dependencies[] = civicrm_member_roles
+package = CiviCRM
+core = 6.x
+version = 6.x-1.0

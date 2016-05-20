@@ -1,0 +1,12 @@
+<?php
+/**
+ * @file Install hooks for CiviCRM Member Roles Insert module.
+ */
+
+function civicrm_member_roles_insert_install() {
+  $result = db_query("SELECT weight FROM {system} WHERE type = 'module' AND name = 'civicrm_member_roles'");
+  $row = db_fetch_array($result);
+  $new_weight = $row['weight'] + 100;
+
+  db_query("UPDATE {system} SET weight = %d WHERE type = 'module' AND name = 'civicrm_member_roles_insert'", $new_weight);
+}
